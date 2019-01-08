@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>04_Array扩展</title>
+</head>
+<body>
+<!--
+1. Array.prototype.indexOf(value) : 得到值在数组中的第一个下标
+2. Array.prototype.lastIndexOf(value) : 得到值在数组中的最后一个下标
+3. Array.prototype.forEach(function(item, index){}) : 遍历数组
+4. Array.prototype.map(function(item, index){}) : 遍历数组返回一个新的数组，返回加工之后的值
+5. Array.prototype.filter(function(item, index){}) : 遍历过滤出一个新的子数组， 返回条件为true的值
+6. Array.prototype.reduce(function(previousValue, currentValue){}) : 遍历累加返回一个最终结果
+-->
+<script type="text/javascript">
+/*
+   需求:
+   1. 输出第一个6的下标
+   2. 输出最后一个6的下标
+   3. 输出所有元素的值和下标
+   4. 根据arr产生一个新数组,要求每个元素都比原来大10
+   5. 根据arr产生一个新数组, 返回的每个元素要大于4
+   6. 输出arr所有元素累加的结果
+*/
+var arr = [1, 6, 8, 6, 9, 8, 5, 3, 2];
+// 1. 输出第一个6的下标
+console.log(arr.findIndex(function (item, index) {
+  //找到第一个返回值的true的元素，将其下标返回出去
+  //适用于对象数据类型
+  return typeof item === 'object' ? item.age === 18 : item === 6;
+}));
+//只适用于基本数据类型
+console.log(arr.indexOf({})); // 找不到返回值为 -1
+
+// 2. 输出最后一个6的下标
+console.log(arr.lastIndexOf(6));
+// 3. 输出所有元素的值和下标
+arr.forEach(function (item, index) {
+  console.log(item, index);
+})
+// 4. 根据arr产生一个新数组,要求每个元素都比原来大10
+var newArr = arr.map(function (item, index) {
+  //最终返回新数组，新数组中每一项的值就是回调函数的返回值
+  return item + 10;
+})
+console.log(arr);
+console.log(newArr);
+// 5. 根据arr产生一个新数组, 返回的每个元素要大于4
+newArr = arr.filter(function (item, index) {
+  //最终返回新数组，新数组的值需不需要保留，就看回调函数返回值
+  //如果返回值为true，将这项值保留新数组中
+  //如果返回值为false，将这项值就不保留，相当于跳过
+  return item > 4;
+})
+console.log(arr);
+console.log(newArr);
+// 6. 输出arr所有元素累加的结果
+var result = arr.reduce(function (previous, current) {
+  /*
+    previous 上一次的返回值
+    current 当前遍历的元素，item
+   */
+  return previous + current;
+}, 0)
+console.log(result);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>对象的深度克隆</title>
+</head>
+<body>
+
+
+<!--
+  1、数据类型：
+    * 数据分为基本的数据类型(String, Number, boolean, Null, Undefined)和对象数据类型
+    - 基本数据类型：
+      特点： 存储的是该对象的实际数据
+    - 对象数据类型：
+      特点： 存储的是该对象在栈中引用，真实的数据存放在堆内存里
+  2、复制数据
+    - 基本数据类型存放的就是实际的数据，可直接复制
+      let number2 = 2;
+      let number1 = number2;
+    - 克隆数据：对象/数组
+      1、区别： 浅拷贝/深度拷贝
+         判断： 拷贝是否全部产生了新的数据还是拷贝的是数据的引用
+         知识点：对象数据存放的是对象在栈内存的引用，直接复制的是对象的引用
+         let obj = {username: 'kobe'}
+         let obj1 = obj; // obj1 复制了obj在栈内存的引用
+      2、常用的拷贝技术
+        1). arr.concat(): 数组浅拷贝
+        2). arr.slice(): 数组浅拷贝
+        3). JSON.parse(JSON.stringify(arr/obj)): 数组或对象深拷贝, 但不能处理函数数据
+        4). 浅拷贝包含函数数据的对象/数组
+        5). 深拷贝包含函数数据的对象/数组
+-->
+<script type="text/javascript">
+  /*const a = 123;
+  let b = a;
+  b = 456;
+  console.log(a);
+
+  const o1 = {a: 1};
+  let o2 = o1;
+  o2.a = 2;
+  console.log(o1);*/
+
+  //对象和数组需要特殊处理
+  const o1 = {a: 1, b: {c: 2}, d: [1, 2, 3], e: function () {}};
+  let o2 = {};
+  Object.assign(o2, o1);
+  o2.a = 2;
+  o2.b.c = 3;
+  o2.d[0] = 456;
+  console.log(o1);
+
+  /*const obj = {};
+  console.log(obj.toString());  // [object Object]
+
+  console.log(Object.prototype.toString.call(obj).slice(8, -1));  // [object Object]
+  console.log(Object.prototype.toString.call([]).slice(8, -1));  // [object Array]
+  console.log(Object.prototype.toString.call(function () {}).slice(8, -1));  // [object Function]
+  console.log(Object.prototype.toString.call(null).slice(8, -1));  // [object Null]
+  console.log(Object.prototype.toString.call(new Date()).slice(8, -1));  // [object Date]
+  console.log(Object.prototype.toString.call(/^123/).slice(8, -1));  // [object RegExp]*/
+
+  //检查所有数据类型的方法
+  function checkType(obj) {
+    return Object.prototype.toString.call(obj).slice(8, -1);
+  }
+  /*
+    Object.prototype.toString()
+    Object.is()
+
+    obj实例对象：能使用？ obj.toString();
+    Object函数对象：能使用？ Object.is();  Object.prototype.toString()  Object.toString()
+
+    Fn.prototype.a()   原型上的方法给实例对象使用
+    Fn.b()  自身的方法，自身使用
+
+    fn实例对象？ fn.a()
+    Fn函数对象：能使用？  Fn.b()
+   */
+
+  //深度克隆
+  function deepClone(obj) {
+    let newObj = null;
+    //判断obj是否是对象或者数组
+    const type = checkType(obj);
+    if (type === 'Object') {
+      //创建一个新对象
+      newObj = {};
+    } else if (type === 'Array') {
+      newObj = [];
+    } else {
+      return obj;
+    }
+
+    //遍历
+    for (let key in obj) {
+      //获取属性的值
+      const value = obj[key];
+      //检查属性值是否是对象或者数组
+      if (checkType(value) === 'Object' || 'Array') {
+        //特殊处理
+        newObj[key] = deepClone(value);
+      } else {
+        //基本数据类型的处理
+        newObj[key] = value;
+      }
+    }
+
+    return newObj;
+
+  }
+
+  const obj = deepClone(o1);
+  console.log(obj);
+  obj.b.c = 456;
+  console.log(o1);
+
+  //深度克隆：（问题：不能克隆函数数据）
+  const o3 = JSON.parse(JSON.stringify(o1));
+  o3.b.c = 789;
+  console.log(o1);
+  console.log(o3);
+
+</script>
+</body>
+</html>

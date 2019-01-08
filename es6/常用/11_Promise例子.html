@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+  /*
+    需求：先请求a数据，等a数据请求成功，再请求b数据，等b数据请求成功，再请求c数据
+   */
+
+  const promise1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      //a数据请求成功了
+      console.log('a数据请求成功了');
+      resolve();
+    }, 1000)
+  })
+
+  promise1
+    .then(() => {
+      //成功的话，请求b数据
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          //b数据请求成功了
+          console.log('b数据请求成功了');
+          resolve();
+        }, 3000)
+      })
+    })
+    .catch(() => {})
+
+    .then(() => {
+      //成功的话，请求c数据
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          //c数据请求成功了
+          console.log('c数据请求成功了');
+          resolve();
+        }, 2000)
+      })
+    })
+    .catch(() => {
+
+    })
+
+    .then(() => {
+      console.log('请求所有数据完成了~');
+    })
+    .catch(() => {})
+
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02_JSON对象</title>
+</head>
+<body>
+<!--
+1. JSON.stringify(obj/arr)
+  * js对象(数组)转换为json对象(数组)
+2. JSON.parse(json)
+  * json对象(数组)转换为js对象(数组)
+
+-->
+<script type="text/javascript">
+  /*
+    JSON:
+      1. 是什么？  一种轻量级的数据格式  "{"name": "sunwukong", "age": 18}"
+      2. 作用： 前后台交互的数据格式（发送请求，返回响应）
+      3. 怎么使用？
+   */
+  var person = {name: 'Jack', age: 18};
+  var arr = [1, 2, 3, 5];
+  //将js对象/数组转化为json字符串
+  var json = JSON.stringify(person);
+  console.log(json);
+  json = JSON.stringify(arr);
+  console.log(json);
+  //将json字符串转化为js对象/数组
+  var js = JSON.parse(json);
+  console.log(js);
+
+</script>
+</body>
+</html>

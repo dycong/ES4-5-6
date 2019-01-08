@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>11_Promise对象</title>
+</head>
+
+<body>
+  <!--
+      1. 理解:
+        * Promise对象: 代表了未来某个将要发生的事件(通常是一个异步操作)
+        * 有了promise对象, 可以将异步操作以同步的流程表达出来, 避免了层层嵌套的回调函数(俗称'回调地狱')
+        * ES6的Promise是一个构造函数, 用来生成promise实例
+      2. 使用promise基本步骤(2步):
+        * 创建promise对象
+          let promise = new Promise((resolve, reject) => {
+              //初始化promise状态为 pending
+            //执行异步操作
+            if(异步操作成功) {
+              resolve(value);//修改promise的状态为fullfilled
+            } else {
+              reject(errMsg);//修改promise的状态为rejected
+            }
+          })
+        * 调用promise的then()
+          promise.then(function(
+            result => console.log(result),
+            errorMsg => alert(errorMsg)
+          ))
+      3. promise对象的3个状态
+        * pending: 初始化状态
+        * fullfilled: 成功状态
+        * rejected: 失败状态
+      4. 应用:
+        * 使用promise实现超时处理
+    -->
+
+  <script type="text/javascript">
+    /*
+  常见异步操作：
+    1. 定时器
+    2. DOM事件
+    3. 发送ajax请求
+ */
+
+    // setTimeout(function () {
+    //   //请求成功的回调函数
+    //   setTimeout(function () {
+    //     //请求成功的回调函数
+    //     setTimeout(function () {
+    //       //请求成功的回调函数
+    //
+    //     }, 2000)
+    //   }, 4000)
+    // }, 1000)
+
+    /* //创建promise对象
+   const promise = new Promise((resolve, reject) => {
+     /!*
+       resolve 解决 - 成功  将promise对象的状态由初始化状态变成成功的状态
+       reject 拒绝 - 失败  将promise对象的状态由初始化状态变成失败的状态
+      *!/
+     /!*
+       promise对象有三种状态：
+         1. 初始化状态（默认情况下）
+         2. 成功的状态 (一旦变成成功的状态就会立即触发成功的回调)
+         3. 失败的状态 (一旦变成失败的状态就会立即触发失败的回调)
+      *!/
+     //在函数中执行异步操作
+     setTimeout(function () {
+       const data = 123;
+       console.log('请求成功了~');
+       reject(data);
+     }, 1000)
+   })
+
+   promise
+     /!*.then(() => {
+       //成功的回调
+       console.log('成功的回调');
+     }, () => {
+       //失败的回调
+       console.log('失败的回调');
+     })*!/
+     .then(result => {
+       //成功的回调
+       console.log(result);
+       console.log('成功的回调');
+     })
+     .catch(error => {
+       //失败的回调
+       console.log(error);
+       console.log('失败的回调');
+     })*/
+
+    /* const promise1 = Promise.resolve();  //创建promise对象，状态是成功的状态
+const promise2 = Promise.reject(456);  //创建promise对象，状态是成功的状态
+promise2
+  .then(() => {
+    //成功的回调
+    console.log('成功的回调');
+  })
+  .catch(error => {
+    //失败的回调
+    console.log(error);
+    console.log('失败的回调');
+  })
+*/
+
+    const promise1 = new Promise((resolve, reject) => {
+      setTimeout(function () {
+        console.log("请求数据a成功~");
+        resolve("请求数据a成功~");
+      }, 1000);
+    });
+
+    const promise2 = new Promise((resolve, reject) => {
+      setTimeout(function () {
+        console.log("请求数据b成功~");
+        resolve("请求数据b成功~");
+      }, 4000);
+    });
+
+    const promise3 = new Promise((resolve, reject) => {
+      setTimeout(function () {
+        console.log("请求数据c成功~");
+        reject("请求数据c成功~");
+      }, 2000);
+    });
+
+    Promise.all([promise1, promise2, promise3])
+      .then(res => {
+        console.log(res); // ["请求数据a成功~", "请求数据b成功~", "请求数据c成功~"]
+        //数组中的promise对象，状态都必须改为成功的状态时，才会触发成功的回调
+        console.log("成功的回调");
+      })
+      .catch(err => {
+        console.log(err); //  '请求数据c成功~'
+        //数组中的promise对象，一旦状态有一个变成失败的状态时，就会立即触发失败的回调
+        console.log("失败的回调");
+      });
+
+    console.log("主线程执行完了~");
+  </script>
+</body>
+
+</html>

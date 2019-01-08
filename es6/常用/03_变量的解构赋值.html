@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>03_变量的解构赋值</title>
+</head>
+<body>
+<!--
+1. 理解:
+  * 从对象或数组中提取数据, 并赋值给变量(多个)
+2. 对象的解构赋值
+  let {n, a} = {n:'tom', a:12}
+3. 数组的解构赋值
+  let [a,b] = [1, 'atguigu'];
+4. 用途
+  * 给多个形参赋值
+-->
+<script type="text/javascript">
+  const person = {
+    name: 'jack',
+    age: 18,
+    sex: '男'
+  }
+  //缓存对象中的属性值
+  /*
+  const name = person.name;
+  const age = person.age;
+  const sex = person.sex;
+  const a = person.a;
+  */
+  //对象的解构赋值
+  //解构：拆解person对象的解构  赋值：将对应属性的值赋值给等号左边的变量
+  const {sex, age} = person;
+  //将对象的属性提取出来并重命名到新变量中
+  const {sex: f, age: g} = person;
+  console.log(f, g);
+
+  //数组的解构赋值， 和位置相关
+  const arr = [2, 5, 9, 7, 3];
+  const [a, b, , d] = arr;
+  console.log(a, b, d);
+
+</script>
+</body>
+</html>

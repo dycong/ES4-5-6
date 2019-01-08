@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      const promise1 = new Promise((resolve, reject) => {
+        setTimeout(function() {
+          console.log("请求数据a成功~");
+          resolve("请求数据a成功~");
+        }, 1000);
+      });
+
+      const promise2 = new Promise((resolve, reject) => {
+        setTimeout(function() {
+          console.log("请求数据b成功~");
+          resolve("请求数据b成功~");
+        }, 4000);
+      });
+
+      const promise3 = new Promise((resolve, reject) => {
+        setTimeout(function() {
+          console.log("请求数据c成功~");
+          reject("请求数据c成功~");
+        }, 2000);
+      });
+
+      Promise.all([promise1, promise2, promise3])
+        .then(res => {
+          console.log(res); // ["请求数据a成功~", "请求数据b成功~", "请求数据c成功~"]
+          //数组中的promise对象，状态都必须改为成功的状态时，才会触发成功的回调
+          console.log("成功的回调");
+        })
+        .catch(err => {
+          console.log(err); //  '请求数据c成功~'
+          //数组中的promise对象，一旦状态有一个变成失败的状态时，就会立即触发失败的回调
+          console.log("失败的回调");
+        });
+
+      console.log("主线程执行完了~");
+    </script>
+  </body>
+</html>
